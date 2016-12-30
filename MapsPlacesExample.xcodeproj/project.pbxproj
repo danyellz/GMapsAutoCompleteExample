@@ -194,12 +194,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 102B9D641CB9D9740027BE4C /* Build configuration list for PBXNativeTarget "MapsPlacesExample" */;
 			buildPhases = (
-				D5EBCC705A4C1911864FADE6 /* Check Pods Manifest.lock */,
+				D5EBCC705A4C1911864FADE6 /* [CP] Check Pods Manifest.lock */,
 				102B9D351CB9D9740027BE4C /* Sources */,
 				102B9D361CB9D9740027BE4C /* Frameworks */,
 				102B9D371CB9D9740027BE4C /* Resources */,
-				8CF7EB97F6A46F6B7135BF05 /* Embed Pods Frameworks */,
-				578682964C499F246217633E /* Copy Pods Resources */,
+				8CF7EB97F6A46F6B7135BF05 /* [CP] Embed Pods Frameworks */,
+				578682964C499F246217633E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -258,13 +258,16 @@
 				TargetAttributes = {
 					102B9D381CB9D9740027BE4C = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0810;
 					};
 					102B9D4F1CB9D9740027BE4C = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0810;
 						TestTargetID = 102B9D381CB9D9740027BE4C;
 					};
 					102B9D5A1CB9D9740027BE4C = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0810;
 						TestTargetID = 102B9D381CB9D9740027BE4C;
 					};
 				};
@@ -317,14 +320,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		578682964C499F246217633E /* Copy Pods Resources */ = {
+		578682964C499F246217633E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,14 +335,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MapsPlacesExample/Pods-MapsPlacesExample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8CF7EB97F6A46F6B7135BF05 /* Embed Pods Frameworks */ = {
+		8CF7EB97F6A46F6B7135BF05 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -347,19 +350,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MapsPlacesExample/Pods-MapsPlacesExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D5EBCC705A4C1911864FADE6 /* Check Pods Manifest.lock */ = {
+		D5EBCC705A4C1911864FADE6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -525,6 +528,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MapsPlacesExample-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -541,6 +545,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.MapsPlacesExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MapsPlacesExample-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -553,6 +558,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MapsPlacesExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MapsPlacesExample.app/MapsPlacesExample";
 			};
 			name = Debug;
@@ -565,6 +571,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MapsPlacesExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MapsPlacesExample.app/MapsPlacesExample";
 			};
 			name = Release;
@@ -576,6 +583,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MapsPlacesExampleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = MapsPlacesExample;
 			};
 			name = Debug;
@@ -587,6 +595,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MapsPlacesExampleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = MapsPlacesExample;
 			};
 			name = Release;
