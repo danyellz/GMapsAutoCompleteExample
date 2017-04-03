@@ -125,8 +125,8 @@ class GooglePlacesService {
             let reference = (photos["photos"].array?.first?.dictionary?["photo_reference"]?.string)!
             
             let urlString = "https://maps.googleapis.com/maps/api/place/photo?"
-            let query = "maxwidth=1200&photoreference=\(reference)&key=%@"
-            let queryString = String(format: query, arguments: [self.apiKey])
+            let query = "maxwidth=1200&photoreference=%@&key=%@"
+            let queryString = String(format: query, arguments: [reference, self.apiKey])
             guard let escapedQuery = queryString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
                 fatalError("Malformed query string when calling into Google Places API")
             }
