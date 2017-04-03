@@ -5,11 +5,12 @@
 use_frameworks!
 
 target ‘MapsPlacesExample’ do
+pod ‘Alamofire’
+pod ’SwiftyJSON’
+pod ‘SDWebImage’
+pod ‘SteviaLayout’
 
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.1'
-pod 'GoogleMaps'
-pod ‘GooglePlaces’
 
 end
 

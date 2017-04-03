@@ -7,26 +7,27 @@
 //
 
 import UIKit
-import GoogleMaps
-import GooglePlaces
+import CoreLocation
+import Stevia
 
-class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheMap, GMSAutocompleteFetcherDelegate {
+class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheMap {
     /**
      * Called when an autocomplete request returns an error.
      * @param error the error that was received.
      */
-
-    let cllocationManager: CLLocationManager = CLLocationManager()
+    let cllocationManager = CLLocationManager()
 
     @IBOutlet weak var mapViewContainer: UIView!
     @IBOutlet weak var searchBtn: UIBarButtonItem!
     @IBOutlet weak var resultText: UILabel!
     
-    var googleMaps: GMSMapView!
-    var addressSearchClient = AddressSearchClient()
+    fileprivate var searchTextView = UITextView()
     var searchResultsTable: SearchResultsTableController!
-    var resultsArray = [String]()
-    var gmsFetcher: GMSAutocompleteFetcher?
+    var resultsArray = [String]() {
+        didSet {
+            searchResultsTable.reloadDataWithArray(resultsArray)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,21 +41,13 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
                 cllocationManager.startUpdatingLocation()
                 self.searchBtn.tintColor = UIColor.clear
         }
-        
-        //Set up autocomplete filter parameters for GMSAutoCompleteFetcher
-        let filter = GMSAutocompleteFilter()
-        filter.type = .noFilter
-        
-        //Add parameters to AutoCompleteFetcher
-        gmsFetcher = GMSAutocompleteFetcher(bounds: nil, filter: filter)
-        gmsFetcher?.delegate = self
     }
     
     //Add Google Maps to the view
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        self.googleMaps = GMSMapView(frame: self.view.frame)
-        self.view.addSubview(self.googleMaps)
+//        self.googleMaps = GMSMapView(frame: self.view.frame)
+//        self.view.addSubview(self.googleMaps)
         
         searchResultsTable = SearchResultsTableController()
         searchResultsTable.delegate = self
@@ -65,15 +58,19 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
         
         //Begin search bar button animation
         DispatchQueue.main.async(execute: {
-        self.performAnimation()
+            self.performBlinkAnimation()
         })
     }
     
+    fileprivate func setupView() {
+        view.sv(searchTextView)
+    }
+    
     //Search bar button animation
-    func performAnimation(){
+    func performBlinkAnimation(){
         UINavigationBar.animate(withDuration: 1, delay: 0.25, options: .repeat, animations: {
             self.searchBtn.tintColor = UIColor.orange
-            },completion: nil)
+        },completion: nil)
     }
     
     @IBAction func searchAddressBtn(_ sender: AnyObject) {
@@ -97,20 +94,20 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
         activityView.addSubview(activitySpinner)
 
         //Prepare pin placement on GMapsview with addresses selected from table view
-        DispatchQueue.main.async(execute: {
-            let position = CLLocationCoordinate2DMake(lat, lon)
-            let marker = GMSMarker(position: position)
-            let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: lon, zoom: 10)
-            self.googleMaps.camera = camera
-            
-            marker.title = "Searched: \(title)"
-            marker.map = self.googleMaps
-            
-            //End loading animation
-            activityView.removeFromSuperview()
-            activitySpinner.stopAnimating()
-            
-        })
+//        DispatchQueue.main.async(execute: {
+//            let position = CLLocationCoordinate2DMake(lat, lon)
+//            let marker = GMSMarker(position: position)
+//            let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: lon, zoom: 10)
+//            self.googleMaps.camera = camera
+//            
+//            marker.title = "Searched: \(title)"
+//            marker.map = self.googleMaps
+//            
+//            //End loading animation
+//            activityView.removeFromSuperview()
+//            activitySpinner.stopAnimating()
+//            
+//        })
     }
     
     //Call GMSAutoCompleteFetcherDelegate extension when GMSFetcher text is changed (searchbar)
@@ -120,7 +117,9 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
         self.resultsArray.removeAll()
         
         //Populate tableView with address strings as characters are added
-        gmsFetcher?.sourceTextHasChanged(searchText)
+        GooglePlacesService.sharedManager.searchForPlaceNamed(name: searchBar.text!, completionHandler: { (addresses) -> Void in
+            self.resultsArray = addresses!
+        })
     }
     
     override func didReceiveMemoryWarning() {
@@ -128,20 +127,21 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
         // Dispose of any resources that can be recreated.
     }
     
-    func didAutocomplete(with predictions: [GMSAutocompletePrediction]) {
-        
-        for prediction in predictions {
-            
-            //Format strings to be added to tableView cells
-            if let prediction = prediction as GMSAutocompletePrediction!{
-                self.resultsArray.append(prediction.attributedFullText.string)
-            }
-        }
-        
-        //Add most similar addresses from searchbar to tableview cells
-        self.searchResultsTable.reloadDataWithArray(self.resultsArray)
-        print(resultsArray)
-    }
+//    func didAutocomplete(with predictions: [GMSAutocompletePrediction]) {
+//        
+//        for prediction in predictions {
+//            
+//            //Format strings to be added to tableView cells
+//            if let prediction = prediction as GMSAutocompletePrediction!{
+//                self.resultsArray.append(prediction.attributedFullText.string)
+//            }
+//        }
+//        
+//        //Add most similar addresses from searchbar to tableview cells
+//        self.searchResultsTable.reloadDataWithArray(self.resultsArray)
+//        print(resultsArray)
+//    }
+    
     func didFailAutocompleteWithError(_ error: Error) {
         resultText?.text = error.localizedDescription
     }

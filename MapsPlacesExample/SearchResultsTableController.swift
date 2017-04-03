@@ -8,11 +8,9 @@
 //Tableviewcontroller to hold autocomplete results when searchBar NSRange > 0
 
 import UIKit
-import GoogleMaps
 
 //Protocol for delegating pin values of selected table row to be added to GMSMapView
 protocol LocateOnTheMap{
-    
     func locateWithLongitude(_ lon:Double, andLatitude lat:Double, andTitle title: String)
 }
 
@@ -21,8 +19,7 @@ class SearchResultsTableController: UITableViewController {
     //searchResults holds all address strings relative to/closest to searchBar text input
     var searchResults: [String]!
     var delegate: LocateOnTheMap!
-    //Call client for getting Google Places locations
-    var addressSearchClient = AddressSearchClient()
+    public var formattedAddress: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,20 +46,11 @@ class SearchResultsTableController: UITableViewController {
         return cell
     }
     
-    //TableView cell selection for adding annotation to GMSMapView
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         //Format string of selected cell before it is added to annotation marker
-        let formattedAddress:String! = self.searchResults[indexPath.row].addingPercentEncoding(withAllowedCharacters: CharacterSet.symbols)
-        self.addressSearchClient.geoCodeAddress(formattedAddress, withCompletionHandler: {(status, success) in
-            
-            //When cell is selected prepare coordinates for map with Protocol
-            DispatchQueue.main.async(execute: {
-            self.delegate.locateWithLongitude(self.addressSearchClient.formattedAddressLong, andLatitude: self.addressSearchClient.formattedAddressLat, andTitle: self.searchResults[indexPath.row])
-            self.dismiss(animated: true, completion: nil)
-                
-        })
-    })
+        formattedAddress = self.searchResults[indexPath.row].addingPercentEncoding(withAllowedCharacters: CharacterSet.symbols)
+        self.delegate.locateWithLongitude(0.00, andLatitude: 0.00, andTitle: searchResults[indexPath.row])
     }
     
     //Reload table view / add updated address strings into tableView as searchBar text changes
