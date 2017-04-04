@@ -104,10 +104,10 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
     }
     
     /* 
-     NOTE: Locate on map with LocateOnThe Map protocol from 
-     SearchResultsTableController (triggered when selecting address from table).
-     In our case, we're going to use the autocomplete functionality to show details about
-     a Place object opposed to show annotations.
+     *NOTE: locateWithLogtiude protocol via SearchResultsController (triggered when selecting address from searchResultsTable)
+     *In our case, we're going to use the autocomplete functionality provided by Google's Places endpoint.
+     *When an autocomplete row is selected, this delegate annotates the main map container, stores previous pin selections,
+     *then segues to a detail view about the selected Place.
      */
     func locateWithLongitude(_ lon: Double, andLatitude lat: Double, andTitle title: String, andIndex: Int) {
         //Begin loading animation

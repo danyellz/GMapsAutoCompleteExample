@@ -43,6 +43,10 @@ class GooglePlace {
              not storing a list of PlaceModels for access at a later time--only a single 
              selection at most is possible from the autocomplete table. The table data is then
              cleared once the user A.) stops searching or B.) selects a cell.
+             
+             
+             
+             
              */
             var emptyRatings = [GoogleRating]()
             if let reviews = json["reviews"].array {
