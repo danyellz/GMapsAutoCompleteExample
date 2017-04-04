@@ -10,7 +10,6 @@ pod ’SwiftyJSON’
 pod ‘SDWebImage’
 pod ‘SteviaLayout’
 pod ‘GoogleMaps’
-pod ‘GooglePlaces’
 
 source 'https://github.com/CocoaPods/Specs.git'
 

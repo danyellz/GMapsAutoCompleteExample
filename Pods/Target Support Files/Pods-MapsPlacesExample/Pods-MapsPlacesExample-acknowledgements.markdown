@@ -28,10 +28,6 @@ THE SOFTWARE.
 
 Copyright 2017 Google
 
-## GooglePlaces
-
-Copyright 2017 Google
-
 ## SDWebImage
 
 Copyright (c) 2016 Olivier Poitrey rs@dailymotion.com
