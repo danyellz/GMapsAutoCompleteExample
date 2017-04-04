@@ -23,7 +23,7 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
     
     fileprivate var searchTextView = UITextView()
     var searchResultsTable: SearchResultsTableController!
-    var resultsArray = [String]() {
+    var resultsArray = [GooglePlace]() {
         didSet {
             searchResultsTable.reloadDataWithArray(resultsArray)
         }
@@ -80,7 +80,7 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
         self.present(searchController, animated: true, completion: nil)
     }
     
-    //Locate on map with LocateOnTheMap protocol delegate created in SearchResultsTableController
+    //Locate on map with LocateOnThe Map protocol delegate created in SearchResultsTableController
     func locateWithLongitude(_ lon: Double, andLatitude lat: Double, andTitle title: String) {
         //Begin loading animation
         let activityView = UIView.init(frame: view.frame)
@@ -110,45 +110,20 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
 //        })
     }
     
-    //Call GMSAutoCompleteFetcherDelegate extension when GMSFetcher text is changed (searchbar)
+    // MARK: Update addresses in searchResultsTable
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
-        
         //When new character is added, remove all previous results in tableView
         self.resultsArray.removeAll()
-        
         //Populate tableView with address strings as characters are added
-        GooglePlacesService.sharedManager.searchForPlaceNamed(name: searchBar.text!, completionHandler: { (addresses) -> Void in
-            self.resultsArray = addresses!
+        GooglePlacesService.sharedManager.searchForPlaceNamed(name: searchBar.text!, completionHandler: { (places) -> Void in
+            self.resultsArray = places!
         })
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-//    func didAutocomplete(with predictions: [GMSAutocompletePrediction]) {
-//        
-//        for prediction in predictions {
-//            
-//            //Format strings to be added to tableView cells
-//            if let prediction = prediction as GMSAutocompletePrediction!{
-//                self.resultsArray.append(prediction.attributedFullText.string)
-//            }
-//        }
-//        
-//        //Add most similar addresses from searchbar to tableview cells
-//        self.searchResultsTable.reloadDataWithArray(self.resultsArray)
-//        print(resultsArray)
-//    }
     
     func didFailAutocompleteWithError(_ error: Error) {
         resultText?.text = error.localizedDescription
     }
-
 }
-
-//Implement GMSAutoCompleteFetcherDelegate protocol to handle custom string prediction
 
 
 

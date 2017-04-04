@@ -16,8 +16,9 @@ protocol LocateOnTheMap{
 
 class SearchResultsTableController: UITableViewController {
     
-    //searchResults holds all address strings relative to/closest to searchBar text input
-    var searchResults: [String]!
+    //searchResults holds all places objects for use in tableview cells. Primarily for address strings.
+    var searchResults: [GooglePlace]!
+    
     var delegate: LocateOnTheMap!
     public var formattedAddress: String?
     
@@ -42,19 +43,19 @@ class SearchResultsTableController: UITableViewController {
     //Add address string to corresponding tableView cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath)
-        cell.textLabel?.text = self.searchResults[indexPath.row]
+        cell.textLabel?.text = self.searchResults[indexPath.row].address
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         //Format string of selected cell before it is added to annotation marker
-        formattedAddress = self.searchResults[indexPath.row].addingPercentEncoding(withAllowedCharacters: CharacterSet.symbols)
-        self.delegate.locateWithLongitude(0.00, andLatitude: 0.00, andTitle: searchResults[indexPath.row])
+        formattedAddress = self.searchResults[indexPath.row].address?.addingPercentEncoding(withAllowedCharacters: CharacterSet.symbols)
+        self.delegate.locateWithLongitude(0.00, andLatitude: 0.00, andTitle: searchResults[indexPath.row].address!)
     }
     
     //Reload table view / add updated address strings into tableView as searchBar text changes
-    func reloadDataWithArray(_ array:[String]){
+    func reloadDataWithArray(_ array:[GooglePlace]){
         self.searchResults = array
         self.tableView.reloadData()
     }
