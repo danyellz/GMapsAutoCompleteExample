@@ -86,10 +86,10 @@ class GooglePlacesService {
         }
     }
     
-    //Parse 'prediction' objects for usable place information
+    //Parse 'prediction' objects to save as GooglePlace objects
     func fetchDetailsFromID(predictions: [JSON], completionHandler: @escaping (_ addArr: [GooglePlace]? ) -> Void) {
-        
-        var placesArr = [GooglePlace]() //Empty arr of type GooglePlace
+        //Empty arr of GooglePlace objects
+        var placesArr = [GooglePlace]()
         /*
          MARK: Check each Place JSON object for place_id key/value.
          This is the vital identifier to retrieve detailed information
@@ -115,6 +115,7 @@ class GooglePlacesService {
                         }
                         // Mark: Check whether a place object is available and valid to initialize as GooglePlace
                         let result = JSON(json["result"])
+                        print("PLACE: \(result)")
                         if let place = GooglePlace(json: result) {
                             placesArr.append(place)
                             completionHandler(placesArr)
@@ -132,27 +133,26 @@ class GooglePlacesService {
     }
     
     // NOTE: Fetches location image and converts to NSData. Configured to later be used with a Realm object (optimal to use images as Data)
-    func fetchLocationImage(completionHandler: @escaping(_ data: NSData?) -> Void){
+    func fetchLocationImage(completionHandler: @escaping(_ image: NSData?) -> Void){
         /* 
          Note: querystring is set to empty-string because in this case we want to return all JSON objects.
          Setting a range limit of ~5 mi naturally limits the number of objects returned from the GMaps Places endpoint.
          */
         GooglePlacesService.sharedManager.fetchPlacesNearMe("", type: .cities, completionHandler: { (places) in
-            let photos = JSON(places.first!)
+            let photos = JSON(places.first)
             let reference = (photos["photos"].array?.first?.dictionary?["photo_reference"]?.string)!
             
             let urlString = "https://maps.googleapis.com/maps/api/place/photo?"
-            let query = "maxwidth=1200&photoreference=%@&key=%@"
-            let queryString = String(format: query, arguments: [reference, self.apiKey])//Interpolate query params with url percent-encoding
-            
-            //Check for valid percent-encoded URL
+            let query = "maxwidth=1200&photoreference=\(reference)&key=%@"
+            let queryString = String(format: query, arguments: [self.apiKey])
             guard let escapedQuery = queryString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
                 fatalError("Malformed query string when calling into Google Places API")
             }
-            let url = urlString + escapedQuery
             
+            let url = urlString + escapedQuery
+            print("IMAGEURL: \(url)")
             if let data = NSData(contentsOf: URL(string: url)!) {
-                completionHandler(data)//If url fetches valid NSData, pass to completion.
+                completionHandler(data)
             }
         })
     }
@@ -165,7 +165,6 @@ class GooglePlacesService {
             if let location = GooglePlacesService.locManager.location {
                 queryFormat = "name=%@&type=%@&location=\(location.coordinate.latitude),\(location.coordinate.longitude)&radius=%lu&language=%@&key=%@"
             }
-            
         }
         
         let queryString = String(format: queryFormat, arguments: [pipedQueryFrom(query), type.toString(), radius, language, apiKey])
@@ -176,12 +175,15 @@ class GooglePlacesService {
         
         let endpoint = baseURL + escapedQuery
         Alamofire.request(endpoint, method: .get, parameters: nil).responseJSON { (response) in
+            
             if let json = response.result.value {
                 guard let json = json as? [String: AnyObject], let places = self.placesFromJSON(json) else {
                     error?("Could not parse JSON or it was empty")
                     return
                 }
-                completionHandler?(places)//Completion
+                
+                completionHandler?(places) //Completion
+                
             } else {
                 guard let apiError = response.result.error else {
                     error?("Bad response")

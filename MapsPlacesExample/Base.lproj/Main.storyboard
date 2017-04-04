@@ -35,16 +35,8 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Search Address" id="Sja-ph-hsl">
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="YsO-tc-T11">
-                            <connections>
-                                <action selector="searchAddressBtn:" destination="BYZ-38-t0r" id="SBa-62-JOe"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="YsO-tc-T11"/>
                     </navigationItem>
-                    <connections>
-                        <outlet property="mapViewContainer" destination="0DX-VP-fOi" id="hVS-gq-9Hq"/>
-                        <outlet property="searchBtn" destination="YsO-tc-T11" id="ZO2-Jw-frK"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -63,7 +55,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OrW-MZ-LTq" id="27Z-s6-omF">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RUn-PJ-008">
@@ -77,10 +69,6 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="2Lh-7u-6zA" id="QTT-hs-gm2"/>
-                            <outlet property="delegate" destination="2Lh-7u-6zA" id="inb-AI-7CY"/>
-                        </connections>
                     </tableView>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ogu-l7-d71" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -97,9 +85,6 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="sWg-Bw-yY9"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5C0-3V-W8V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -24,6 +24,7 @@
 		102B9D781CB9E9D10027BE4C /* SearchResultsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102B9D771CB9E9D10027BE4C /* SearchResultsTableController.swift */; };
 		10EC27511E92DEAB00DB43A1 /* GooglePlacesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10EC27501E92DEAB00DB43A1 /* GooglePlacesService.swift */; };
 		10EC27551E92E59100DB43A1 /* GooglePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10EC27541E92E59100DB43A1 /* GooglePlace.swift */; };
+		10EC27581E9344AE00DB43A1 /* PlaceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10EC27571E9344AE00DB43A1 /* PlaceDetailViewController.swift */; };
 		348D4428035B86035BF573A0 /* Pods_MapsPlacesExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CE81D6890B8C416B95040D4 /* Pods_MapsPlacesExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +70,7 @@
 		102B9D771CB9E9D10027BE4C /* SearchResultsTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsTableController.swift; sourceTree = "<group>"; };
 		10EC27501E92DEAB00DB43A1 /* GooglePlacesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GooglePlacesService.swift; sourceTree = "<group>"; };
 		10EC27541E92E59100DB43A1 /* GooglePlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GooglePlace.swift; sourceTree = "<group>"; };
+		10EC27571E9344AE00DB43A1 /* PlaceDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceDetailViewController.swift; sourceTree = "<group>"; };
 		2CE81D6890B8C416B95040D4 /* Pods_MapsPlacesExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapsPlacesExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9023F2199CB3FA96BABB6FB4 /* Pods-MapsPlacesExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapsPlacesExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapsPlacesExample/Pods-MapsPlacesExample.release.xcconfig"; sourceTree = "<group>"; };
 		EC30D45972C66D53BB00510B /* Pods-MapsPlacesExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapsPlacesExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapsPlacesExample/Pods-MapsPlacesExample.debug.xcconfig"; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 			children = (
 				102B9D3E1CB9D9740027BE4C /* MainMapViewController.swift */,
 				102B9D771CB9E9D10027BE4C /* SearchResultsTableController.swift */,
+				10EC27571E9344AE00DB43A1 /* PlaceDetailViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -398,6 +401,7 @@
 			files = (
 				102B9D451CB9D9740027BE4C /* MapsPlacesExample.xcdatamodeld in Sources */,
 				10EC27511E92DEAB00DB43A1 /* GooglePlacesService.swift in Sources */,
+				10EC27581E9344AE00DB43A1 /* PlaceDetailViewController.swift in Sources */,
 				10EC27551E92E59100DB43A1 /* GooglePlace.swift in Sources */,
 				102B9D3F1CB9D9740027BE4C /* MainMapViewController.swift in Sources */,
 				102B9D3D1CB9D9740027BE4C /* AppDelegate.swift in Sources */,

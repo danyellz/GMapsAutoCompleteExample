@@ -17,17 +17,17 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
      */
     let cllocationManager = CLLocationManager()
 
-    @IBOutlet weak var mapViewContainer: UIView!
-    @IBOutlet weak var searchBtn: UIBarButtonItem!
-    @IBOutlet weak var resultText: UILabel!
-    
-    fileprivate var searchTextView = UITextView()
+    var mapViewContainer = UIView()
+    var searchBtn = UIBarButtonItem()
+    var resultText = UILabel()
     var searchResultsTable: SearchResultsTableController!
     var resultsArray = [GooglePlace]() {
         didSet {
             searchResultsTable.reloadDataWithArray(resultsArray)
         }
     }
+    
+    // MARK: Life-cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,20 +37,22 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
         self.cllocationManager.requestWhenInUseAuthorization()
         
         if CLLocationManager.locationServicesEnabled() {
-                cllocationManager.desiredAccuracy = kCLLocationAccuracyBest
-                cllocationManager.startUpdatingLocation()
-                self.searchBtn.tintColor = UIColor.clear
+            cllocationManager.desiredAccuracy = kCLLocationAccuracyBest
+            cllocationManager.startUpdatingLocation()
+            self.searchBtn.tintColor = UIColor.clear
         }
+        
+        searchResultsTable = SearchResultsTableController()
+        searchResultsTable.delegate = self
+        
+        setupView()
+
     }
     
-    //Add Google Maps to the view
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
 //        self.googleMaps = GMSMapView(frame: self.view.frame)
 //        self.view.addSubview(self.googleMaps)
-        
-        searchResultsTable = SearchResultsTableController()
-        searchResultsTable.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -63,37 +65,47 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
     }
     
     fileprivate func setupView() {
-        view.sv(searchTextView)
+        view.sv()
+        
+        navigationItem.title = "PlaceSearch"
+        view.backgroundColor = UIColor.lightGray
+        
+        searchBtn = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(triggerSearch))
+        self.navigationItem.rightBarButtonItem = searchBtn
     }
     
     //Search bar button animation
-    func performBlinkAnimation(){
+    fileprivate func performBlinkAnimation(){
         UINavigationBar.animate(withDuration: 1, delay: 0.25, options: .repeat, animations: {
             self.searchBtn.tintColor = UIColor.orange
         },completion: nil)
     }
     
-    @IBAction func searchAddressBtn(_ sender: AnyObject) {
+    @objc fileprivate func triggerSearch() {
         //Insatantiate SearchResultsTableController table to show up when searchBtn is pressed
         let searchController = UISearchController(searchResultsController: searchResultsTable)
         searchController.searchBar.delegate = self
         self.present(searchController, animated: true, completion: nil)
     }
     
-    //Locate on map with LocateOnThe Map protocol delegate created in SearchResultsTableController
-    func locateWithLongitude(_ lon: Double, andLatitude lat: Double, andTitle title: String) {
+    /* 
+     NOTE: Locate on map with LocateOnThe Map protocol from 
+     SearchResultsTableController (triggered when selecting address from table).
+     In our case, we're going to use the autocomplete functionality to show details about
+     a Place object opposed to show annotations.
+     */
+    func locateWithLongitude(_ lon: Double, andLatitude lat: Double, andTitle title: String, andIndex: Int) {
         //Begin loading animation
         let activityView = UIView.init(frame: view.frame)
+        let activitySpinner = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         activityView.backgroundColor = UIColor.gray
         activityView.alpha = 1
         view.addSubview(activityView)
-        
-        let activitySpinner = UIActivityIndicatorView.init(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         activitySpinner.center = view.center
         activitySpinner.startAnimating()
         activityView.addSubview(activitySpinner)
-
-        //Prepare pin placement on GMapsview with addresses selected from table view
+        
+        //MARK: Uncomment and install GoogleMaps SDK for map annotation usage
 //        DispatchQueue.main.async(execute: {
 //            let position = CLLocationCoordinate2DMake(lat, lon)
 //            let marker = GMSMarker(position: position)
@@ -103,11 +115,14 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
 //            marker.title = "Searched: \(title)"
 //            marker.map = self.googleMaps
 //            
-//            //End loading animation
-//            activityView.removeFromSuperview()
-//            activitySpinner.stopAnimating()
-//            
-//        })
+        //End loading animation
+        activityView.removeFromSuperview()
+        activitySpinner.stopAnimating()
+        
+        let placeDetailVC = PlaceDetailViewController()
+        placeDetailVC.place = self.resultsArray[andIndex]
+        searchResultsTable.dismiss(animated: false, completion: nil)
+        self.navigationController?.pushViewController(placeDetailVC, animated: true)
     }
     
     // MARK: Update addresses in searchResultsTable
@@ -121,7 +136,7 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
     }
     
     func didFailAutocompleteWithError(_ error: Error) {
-        resultText?.text = error.localizedDescription
+        resultText.text = error.localizedDescription
     }
 }
 
