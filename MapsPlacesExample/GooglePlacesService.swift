@@ -56,14 +56,14 @@ class GooglePlacesService {
         let currentLoc = GooglePlacesService.locManager.location
         let baseUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/json?"
         let locationFormat = "input=%@&location=\(currentLoc?.coordinate.latitude),\(currentLoc?.coordinate.longitude)&radius=%lu&language=%@&key=%@"
-        let queryString = String(format: locationFormat, arguments: [name!, 16093, language, apiKey]) //Interpolate query params with url percent-encoding
         
+        let queryString = String(format: locationFormat, arguments: [name!, 16093, language, apiKey]) //Interpolate query params with url percent-encoding
         //Check for valid percent-encoded URL
         guard let escapedQuery = queryString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
             fatalError("Malformed query string when calling into Google Places API")
         }
-        let endpoint = baseUrl + escapedQuery
         
+        let endpoint = baseUrl + escapedQuery
         Alamofire.request(endpoint, method: .get, parameters: nil).responseJSON { (response) in
             if let json = response.result.value {
                 
@@ -141,9 +141,9 @@ class GooglePlacesService {
         GooglePlacesService.sharedManager.fetchPlacesNearMe("", type: .cities, completionHandler: { (places) in
             let photos = JSON(places.first)
             let reference = (photos["photos"].array?.first?.dictionary?["photo_reference"]?.string)!
-            
             let urlString = "https://maps.googleapis.com/maps/api/place/photo?"
             let query = "maxwidth=1200&photoreference=\(reference)&key=%@"
+            
             let queryString = String(format: query, arguments: [self.apiKey])
             guard let escapedQuery = queryString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
                 fatalError("Malformed query string when calling into Google Places API")
@@ -168,20 +168,18 @@ class GooglePlacesService {
         }
         
         let queryString = String(format: queryFormat, arguments: [pipedQueryFrom(query), type.toString(), radius, language, apiKey])
-        
         guard let escapedQuery = queryString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
             fatalError("Malformed query string when calling into Google Places API")
         }
         
         let endpoint = baseURL + escapedQuery
         Alamofire.request(endpoint, method: .get, parameters: nil).responseJSON { (response) in
-            
             if let json = response.result.value {
+                
                 guard let json = json as? [String: AnyObject], let places = self.placesFromJSON(json) else {
                     error?("Could not parse JSON or it was empty")
                     return
                 }
-                
                 completionHandler?(places) //Completion
                 
             } else {
@@ -211,7 +209,7 @@ class GooglePlacesService {
     let baseURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
     var queryFormat = ""
     let currentLocURL = "https://www.googleapis.com/geolocation/v1/geolocate?key=%@&key=%@"
-    let apiKey = "AIzaSyDheMo9mZDAjLhGqE_vBckIcTf_DzQJW2o"
+    let apiKey = "AIzaSyBw1J9FHIMHcAesv9ihKfBIfYd_H6tgL8Y"
     let radius = 8000 // ~5 miles
     let language = "en"
     

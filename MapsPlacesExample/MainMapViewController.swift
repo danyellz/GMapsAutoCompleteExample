@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import Stevia
+import GoogleMaps
 
 class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheMap {
     /**
@@ -18,6 +19,8 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
     let cllocationManager = CLLocationManager()
 
     var mapViewContainer = UIView()
+    var googleMaps = GMSMapView()
+    
     var searchBtn = UIBarButtonItem()
     var resultText = UILabel()
     var searchResultsTable: SearchResultsTableController!
@@ -49,12 +52,6 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
 
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-//        self.googleMaps = GMSMapView(frame: self.view.frame)
-//        self.view.addSubview(self.googleMaps)
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -65,7 +62,11 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
     }
     
     fileprivate func setupView() {
-        view.sv()
+        view.sv(googleMaps)
+        view.layout(
+            0,
+            |googleMaps| ~ view.frame.height
+        )
         
         navigationItem.title = "PlaceSearch"
         view.backgroundColor = UIColor.lightGray
@@ -85,6 +86,7 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
         //Insatantiate SearchResultsTableController table to show up when searchBtn is pressed
         let searchController = UISearchController(searchResultsController: searchResultsTable)
         searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Search your favorite place's address..."
         self.present(searchController, animated: true, completion: nil)
     }
     
@@ -106,15 +108,16 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
         activityView.addSubview(activitySpinner)
         
         //MARK: Uncomment and install GoogleMaps SDK for map annotation usage
-//        DispatchQueue.main.async(execute: {
-//            let position = CLLocationCoordinate2DMake(lat, lon)
-//            let marker = GMSMarker(position: position)
-//            let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: lon, zoom: 10)
-//            self.googleMaps.camera = camera
-//            
-//            marker.title = "Searched: \(title)"
-//            marker.map = self.googleMaps
-//            
+        DispatchQueue.main.async(execute: {
+            let position = CLLocationCoordinate2DMake(lat, lon)
+            let marker = GMSMarker(position: position)
+            let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: lon, zoom: 10)
+            self.googleMaps.camera = camera
+            
+            marker.title = "Searched: \(title)"
+            marker.map = self.googleMaps
+        })
+            
         //End loading animation
         activityView.removeFromSuperview()
         activitySpinner.stopAnimating()

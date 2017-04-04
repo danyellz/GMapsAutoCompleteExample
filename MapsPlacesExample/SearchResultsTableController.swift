@@ -45,8 +45,12 @@ class SearchResultsTableController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //Format string of selected cell before it is added to annotation marker
-        formattedAddress = self.searchResults[indexPath.row].address?.addingPercentEncoding(withAllowedCharacters: CharacterSet.symbols)
-        self.delegate.locateWithLongitude(0.00, andLatitude: 0.00, andTitle: searchResults[indexPath.row].address!, andIndex: indexPath.row)
+        let formatted = self.searchResults[indexPath.row].address
+        let lat = self.searchResults[indexPath.row].lat
+        let lng = self.searchResults[indexPath.row].lng
+        
+        formattedAddress = formatted?.addingPercentEncoding(withAllowedCharacters: CharacterSet.symbols)
+        self.delegate.locateWithLongitude(lng!, andLatitude: lat!, andTitle: searchResults[indexPath.row].address!, andIndex: indexPath.row)
     }
     
     //Realod self with updated address strings into tableView as searchBar text changes

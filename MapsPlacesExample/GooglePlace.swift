@@ -15,7 +15,11 @@ class GooglePlace {
     var rating: Float?
     var openNow: Bool?
     var locPhotoString: String?
+    var lat: Double?
+    var lng: Double?
+    var ratings = [GoogleRating]()
     
+    //MARK: Initialize template only if a location name exists
     init(name: String) {
         self.name = name
     }
@@ -25,8 +29,28 @@ class GooglePlace {
             
             self.init(name: name)
             self.address = json["formatted_address"].string
-            self.rating = json["rating"].float
+            self.rating = json["rating"].float ?? 0.0
             self.locPhotoString = json["icon"].string
+            self.openNow = json["open_now"].bool ?? false
+            if let location = json["geometry"]["location"].dictionary {
+                self.lat = location["lat"]?.double
+                self.lng = location["lng"]?.double
+            }
+            /*
+             Empty array to be cached then passed to the class variable.
+             This is not optimized. Ideally you'd cache a large sum of data for reviews,
+             then access the data via CoreData, Realm, etc. Luckily, in this case, we're
+             not storing a list of objects inside of multiple Places objects simultaneously.
+             */
+            var emptyRatings = [GoogleRating]()
+            if let reviews = json["reviews"].array {
+                for review in reviews {
+                    if let rating = GoogleRating(json: review) {
+                        emptyRatings.append(rating)
+                    }
+                }
+                ratings = emptyRatings
+            }
             
             return
         }
