@@ -16,6 +16,7 @@ import SDWebImage
 typealias GoogleErrorBlock = (_ errorMessage: String) -> Void
 typealias GooglePlacesBlock = (_ places: [GooglePlace]) -> Void
 
+// MARK: Enum to select specific location query parameters
 enum GooglePlaceType {
     case restaurant
     case cities
@@ -77,6 +78,7 @@ class GooglePlacesService {
                         completionHandler(arr) //Pass GooglePlace collection to ViewController
                     })
                 }
+                
             } else {
                 guard response.result.error == nil else {
                     print("Bad response")
@@ -88,12 +90,12 @@ class GooglePlacesService {
     
     //Parse 'prediction' objects to save as GooglePlace objects
     func fetchDetailsFromID(predictions: [JSON], completionHandler: @escaping (_ addArr: [GooglePlace]? ) -> Void) {
-        //Empty arr of GooglePlace objects
-        var placesArr = [GooglePlace]()
+        
+        var placesArr = [GooglePlace]() //Empty arr to be populated then passed to completion
         /*
-         MARK: Check each Place JSON object for place_id key/value.
-         This is the vital identifier to retrieve detailed information
-         a Google Places location.
+         *MARK: Check each Place JSON object for place_id key/value.
+         *This is the vital identifier to retrieve detailed information
+         *about a Google Places location, including address strings.
          */
         for object in predictions {
             if let id = object["place_id"].string {
@@ -115,7 +117,6 @@ class GooglePlacesService {
                         }
                         // Mark: Check whether a place object is available and valid to initialize as GooglePlace
                         let result = JSON(json["result"])
-                        print("PLACE: \(result)")
                         if let place = GooglePlace(json: result) {
                             placesArr.append(place)
                             completionHandler(placesArr)
@@ -135,8 +136,8 @@ class GooglePlacesService {
     // NOTE: Fetches location image and converts to NSData. Configured to later be used with a Realm object (optimal to use images as Data)
     func fetchLocationImage(completionHandler: @escaping(_ image: NSData?) -> Void){
         /* 
-         Note: querystring is set to empty-string because in this case we want to return all JSON objects.
-         Setting a range limit of ~5 mi naturally limits the number of objects returned from the GMaps Places endpoint.
+         *Note: querystring is set to empty-string because in this case we want to return all Places objects without filters.
+         *Setting a range limit of ~5 mi naturally limits the number of objects returned from the GMaps Places endpoint.
          */
         GooglePlacesService.sharedManager.fetchPlacesNearMe("", type: .cities, completionHandler: { (places) in
             let photos = JSON(places.first)
@@ -175,19 +176,19 @@ class GooglePlacesService {
         let endpoint = baseURL + escapedQuery
         Alamofire.request(endpoint, method: .get, parameters: nil).responseJSON { (response) in
             if let json = response.result.value {
-                
                 guard let json = json as? [String: AnyObject], let places = self.placesFromJSON(json) else {
                     error?("Could not parse JSON or it was empty")
                     return
                 }
-                completionHandler?(places) //Completion
-                
+                //Successful completion
+                completionHandler?(places)
             } else {
+                //Check for a direct endpoint error
                 guard let apiError = response.result.error else {
                     error?("Bad response")
                     return
                 }
-                
+                //Error
                 error?(apiError.localizedDescription)
             }
         }

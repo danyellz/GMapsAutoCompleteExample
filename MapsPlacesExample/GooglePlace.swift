@@ -40,7 +40,9 @@ class GooglePlace {
              Empty array to be cached then passed to the class variable.
              This is not optimized. Ideally you'd cache a large sum of data for reviews,
              then access the data via CoreData, Realm, etc. Luckily, in this case, we're
-             not storing a list of objects inside of multiple Places objects simultaneously.
+             not storing a list of PlaceModels for access at a later time--only a single 
+             selection at most is possible from the autocomplete table. The table data is then
+             cleared once the user A.) stops searching or B.) selects a cell.
              */
             var emptyRatings = [GoogleRating]()
             if let reviews = json["reviews"].array {

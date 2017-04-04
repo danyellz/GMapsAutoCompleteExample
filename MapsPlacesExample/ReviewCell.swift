@@ -13,37 +13,39 @@ import Stevia
 
 class ReviewCell: UITableViewCell {
     
+    //MARK: View assets
     var mainBackgroundView = UIView()
     var avatar: UIImageView = UIImageView()
     var tappableName = UILabel()
     var commentTextView = UITextView()
     var selectBtn = UIButton()
     
+    //MARK: Reused variables
     var avatarString: String? = ""
     var name: String? = ""
     var commentString: String? = ""
     
+    //MARK: If a GoogleRating object is given, pass it's variables into reusable cell upon initilization
     var commentItem: GoogleRating? {
         didSet{
             if let comment = self.commentItem?.review {
                 if let userImg = commentItem?.usrPhotoString {
-                    self.avatar.sd_setImage(with: URL(string: userImg),
-                                            placeholderImage: UIImage(),
-                                            options: [.refreshCached]
-                    )
+                    self.avatar.sd_setImage(with: URL(string: userImg), placeholderImage: UIImage(), options: [.refreshCached] )
                 }
-                
                 self.tappableName.text = String(format: "%.1f", (commentItem?.rating) ?? 0.0)
                 self.commentTextView.text = comment
             }
         }
     }
     
+    //MARK: - Set up layouts for cell
     override func layoutSubviews() {
         super.layoutSubviews()
         
         setupView()
     }
+    
+    //MARK: - Initialization
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -55,7 +57,6 @@ class ReviewCell: UITableViewCell {
     }
     
     func setupView() {
-        
         self.contentView.sv(mainBackgroundView)
         mainBackgroundView.sv(avatar, tappableName, selectBtn, commentTextView)
         

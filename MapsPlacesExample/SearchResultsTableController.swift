@@ -8,13 +8,19 @@
 
 import UIKit
 
-//Protocol for delegating pin values of selected table row to be added to GMSMapView
+/*
+ *MARK: Protocol used to add annotations to GMaps, as well as determine the index of collections when
+ *cells from the autocomplete table are selected.
+ */
 protocol LocateOnTheMap{
-    func locateWithLongitude(_ lon:Double, andLatitude lat:Double, andTitle title: String, andIndex index: Int)
+    func locateWithLongitude(_ lon : Double,
+                             andLatitude lat : Double,
+                             andTitle title : String,
+                             andIndex index : Int)
 }
 
+//searchResults holds all Place objects for use in tableview cells. Primarily for address strings.
 class SearchResultsTableController: UITableViewController {
-    //searchResults holds all Place objects for use in tableview cells. Primarily for address strings.
     var searchResults = [GooglePlace]()
     var delegate: LocateOnTheMap!
     public var formattedAddress: String?
@@ -36,7 +42,7 @@ class SearchResultsTableController: UITableViewController {
         return self.searchResults.count
     }
     
-    //Show address strings corresponding cells
+    //MARK : Show address strings at corresponding array index
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath)
         cell.textLabel?.text = self.searchResults[indexPath.row].address
@@ -49,11 +55,12 @@ class SearchResultsTableController: UITableViewController {
         let lat = self.searchResults[indexPath.row].lat
         let lng = self.searchResults[indexPath.row].lng
         
+        //Format address for UITableViewCell usage
         formattedAddress = formatted?.addingPercentEncoding(withAllowedCharacters: CharacterSet.symbols)
         self.delegate.locateWithLongitude(lng!, andLatitude: lat!, andTitle: searchResults[indexPath.row].address!, andIndex: indexPath.row)
     }
     
-    //Realod self with updated address strings into tableView as searchBar text changes
+    //Realod self with updated address strings into tableView as searchBar text updates
     func reloadDataWithArray(_ array: [GooglePlace]){
         self.searchResults = array
         self.tableView.reloadData()
