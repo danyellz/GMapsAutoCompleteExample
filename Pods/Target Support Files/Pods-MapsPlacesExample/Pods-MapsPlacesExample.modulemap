@@ -1,6 +1,0 @@
-framework module Pods_MapsPlacesExample {
-  umbrella header "Pods-MapsPlacesExample-umbrella.h"
-
-  export *
-  module * { export * }
-}

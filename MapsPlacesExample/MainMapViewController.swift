@@ -18,9 +18,10 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
      */
     let cllocationManager = CLLocationManager()
 
+    // MARK : View assets
+    
     var mapViewContainer = UIView()
     var googleMaps = GMSMapView()
-    
     var searchBtn = UIBarButtonItem()
     var resultText = UILabel()
     var searchResultsTable: SearchResultsTableController!
@@ -81,9 +82,9 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
         
         // MARK: Additional layouts
         
-        navigationItem.title = "PlaceSearch"
         view.backgroundColor = UIColor.lightGray
         
+        navigationItem.title = "PlaceSearch"
         searchBtn = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(triggerSearch))
         self.navigationItem.rightBarButtonItem = searchBtn
     }
@@ -95,8 +96,8 @@ class MainMapViewController: UIViewController, UISearchBarDelegate, LocateOnTheM
         },completion: nil)
     }
     
+    //Show SearchResultsTableViewController when barbuttonitem is triggered
     @objc fileprivate func triggerSearch() {
-        //Insatantiate SearchResultsTableController table to show up when searchBtn is pressed
         let searchController = UISearchController(searchResultsController: searchResultsTable)
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Search your favorite place's address..."
