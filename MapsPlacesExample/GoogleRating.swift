@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-class GoogleRating {
+struct GoogleRating {
     var review: String?
     var rating: Float?
     var usrPhotoString: String?
@@ -19,7 +19,7 @@ class GoogleRating {
         self.review = review
     }
     
-    convenience init?(json: JSON) {
+    init?(json: JSON) {
         if let review = json["text"].string {
             self.init(review: review)
             

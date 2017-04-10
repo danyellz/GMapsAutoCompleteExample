@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-class GooglePlace {
+struct GooglePlace {
     var name: String?
     var address: String?
     var rating: Float?
@@ -24,7 +24,7 @@ class GooglePlace {
         self.name = name
     }
     
-    convenience init?(json: JSON) {
+    init?(json: JSON) {
         if let name = json["name"].string {
             
             self.init(name: name)
