@@ -1,20 +1,30 @@
 PODS:
-  - GoogleMaps (2.1.1):
-    - GoogleMaps/Maps (= 2.1.1)
-  - GoogleMaps/Base (2.1.1)
-  - GoogleMaps/Maps (2.1.1):
+  - Alamofire (4.4.0)
+  - GoogleMaps (2.2.0):
+    - GoogleMaps/Maps (= 2.2.0)
+  - GoogleMaps/Base (2.2.0)
+  - GoogleMaps/Maps (2.2.0):
     - GoogleMaps/Base
-  - GooglePlaces (2.1.1):
-    - GoogleMaps/Base (= 2.1.1)
+  - SDWebImage (4.0.0):
+    - SDWebImage/Core (= 4.0.0)
+  - SDWebImage/Core (4.0.0)
+  - SteviaLayout (3.1.2)
+  - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
+  - Alamofire
   - GoogleMaps
-  - GooglePlaces
+  - SDWebImage
+  - SteviaLayout
+  - SwiftyJSON
 
 SPEC CHECKSUMS:
-  GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
-  GooglePlaces: 35636d86e5020cba3856eb988c09a5491de0a65a
+  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  GoogleMaps: 104c418d61ab8a05dff06ed0784c25ea9d37da45
+  SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
+  SteviaLayout: 8b68904fc1e1897ba2451d795b0d88a7c6973b60
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 64b0579f544dde76df5026e759d6311d4630ef96
+PODFILE CHECKSUM: 7629c8b35f95542d5cf314ed7bd7e783ab1e5e42
 
 COCOAPODS: 1.2.0.beta.3
